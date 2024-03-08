@@ -30,6 +30,22 @@ public class AppInfo {
 	private final String mPackageName;
 
 	AppInfo(PackageManager packageManager, ResolveInfo resolveInfo) {
+
+		//https://developer.android.com/reference/android/content/pm/PackageManager#getApplicationBanner(java.lang.String)
+
+		/*
+		Intent AppsIntent = new Intent(Intent.ACTION_MAIN, null);
+		AppsIntent.addCategory(Intent.CATEGORY_LEANBACK_LAUNCHER);
+		List<ResolveInfo> apps = mPackageManager.queryIntentActivities(AppsIntent, 0);
+
+		for (ResolveInfo app : apps) {
+			Drawable banner = app.activityInfo.loadBanner(mPackageManager);
+			if (banner == null) {
+				banner = app.activityInfo.applicationInfo.loadBanner(mPackageManager);
+			}
+		}
+		*/
+
 		mPackageName = resolveInfo.activityInfo.packageName;
 		mIcon = resolveInfo.loadIcon(packageManager);
 		try {
