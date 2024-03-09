@@ -23,8 +23,10 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
+import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
+import android.content.pm.ResolveInfo;
 import android.os.BatteryManager;
 import android.os.Build;
 import android.os.Bundle;
@@ -50,6 +52,7 @@ import org.cosinus.launchertv.views.ApplicationView;
 
 import java.text.DateFormat;
 import java.util.Date;
+import java.util.List;
 
 @SuppressWarnings("PointlessBooleanExpression")
 public class ApplicationFragment extends Fragment implements View.OnClickListener, View.OnLongClickListener {
@@ -87,8 +90,8 @@ public class ApplicationFragment extends Fragment implements View.OnClickListene
 		}
 	};
 
-	private int mGridX = 3;
-	private int mGridY = 2;
+	private int mGridX = 5;
+	private int mGridY = 3;
 	private LinearLayout mContainer;
 	private ApplicationView[][] mApplications = null;
 	private View mSettings;
@@ -291,7 +294,7 @@ public class ApplicationFragment extends Fragment implements View.OnClickListene
 			if (TextUtils.isEmpty(packageName) == false) {
 				PackageInfo pi = pm.getPackageInfo(packageName, 0);
 				if (pi != null) {
-					AppInfo appInfo = new AppInfo(pm, pi.applicationInfo);
+					AppInfo appInfo = new AppInfo(pm, getResolveInfo(pm, pi.applicationInfo));
 					app.setImageDrawable(appInfo.getIcon())
 							.setText(appInfo.getName())
 							.setPackageName(appInfo.getPackageName());
@@ -304,6 +307,31 @@ public class ApplicationFragment extends Fragment implements View.OnClickListene
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+	}
+
+	//create a method to get ResolveInfo from ApplicationInfo
+	private ResolveInfo getResolveInfo(PackageManager pm, ApplicationInfo applicationInfo) {
+		Intent mainIntent = new Intent(Intent.ACTION_MAIN, null);
+		mainIntent.addCategory(Intent.CATEGORY_LAUNCHER);
+
+		List<ResolveInfo> intentActivities = pm.queryIntentActivities(mainIntent, 0);
+
+		for (ResolveInfo resolveInfo : intentActivities) {
+			if (resolveInfo.activityInfo.packageName.equals(applicationInfo.packageName)) {
+				return resolveInfo;
+			}
+		}
+
+		mainIntent = new Intent(Intent.ACTION_MAIN, null);
+		intentActivities = pm.queryIntentActivities(mainIntent, 0);
+
+		for (ResolveInfo resolveInfo : intentActivities) {
+			if (resolveInfo.activityInfo.packageName.equals(applicationInfo.packageName)) {
+				return resolveInfo;
+			}
+		}
+
+		return null;
 	}
 
 	@Override

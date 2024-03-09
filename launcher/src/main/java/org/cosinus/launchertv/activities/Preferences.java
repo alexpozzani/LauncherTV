@@ -46,7 +46,6 @@ public class Preferences extends PreferenceActivity {
 	public static final String PREFERENCE_MARGIN_X = "preference_margin_x";
 	public static final String PREFERENCE_MARGIN_Y = "preference_margin_y";
 	public static final String PREFERENCE_LOCKED = "preference_locked";
-	private static final String PREFERENCE_GITHUB = "preference_github";
 	private static final String PREFERENCE_ABOUT = "preference_about";
 
 	@Override
@@ -67,21 +66,6 @@ public class Preferences extends PreferenceActivity {
 			public boolean onPreferenceChange(Preference preference, Object newValue) {
 				findPreference(PREFERENCE_TRANSPARENCY).setEnabled(!(boolean) newValue);
 				return true;
-			}
-		});
-
-		findPreference(PREFERENCE_GITHUB).setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
-			@Override
-			public boolean onPreferenceClick(Preference preference) {
-				try {
-					startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://github.com/alescdb/LauncherTV")));
-				} catch (Exception e) {
-					e.printStackTrace();
-					Toast.makeText(getApplicationContext(),
-							String.format(getString(R.string.error_opening_link), "Github", e.getMessage()),
-							Toast.LENGTH_LONG).show();
-				}
-				return (true);
 			}
 		});
 

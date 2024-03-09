@@ -47,14 +47,14 @@
 		android:key="category_grid"
 		android:title="@string/app_grid">
 		<ListPreference
-			android:defaultValue="3"
+			android:defaultValue="5"
 			android:entries="@array/grid_x"
 			android:entryValues="@array/grid_x"
 			android:key="preference_grid_x"
 			android:summary="@string/summary_grid_x"
 			android:title="@string/title_grid_x"/>
 		<ListPreference
-			android:defaultValue="2"
+			android:defaultValue="3"
 			android:entries="@array/grid_y"
 			android:entryValues="@array/grid_y"
 			android:key="preference_grid_y"
@@ -108,9 +108,5 @@
 		<Preference
 			android:key="preference_about"
 			android:title="@string/app_name"/>
-		<Preference
-			android:key="preference_github"
-			android:title="@string/title_github">
-		</Preference>
 	</PreferenceCategory>
 </PreferenceScreen>

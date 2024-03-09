@@ -17,11 +17,16 @@
 
 package org.cosinus.launchertv;
 
+import android.content.Intent;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
+import android.content.res.Configuration;
+import android.content.res.Resources;
 import android.graphics.drawable.Drawable;
 import android.support.annotation.NonNull;
+import android.util.DisplayMetrics;
+import android.util.Log;
 
 
 public class AppInfo {
@@ -29,42 +34,17 @@ public class AppInfo {
 	private String mName;
 	private final String mPackageName;
 
-	AppInfo(PackageManager packageManager, ResolveInfo resolveInfo) {
-
-		//https://developer.android.com/reference/android/content/pm/PackageManager#getApplicationBanner(java.lang.String)
-
-		/*
-		Intent AppsIntent = new Intent(Intent.ACTION_MAIN, null);
-		AppsIntent.addCategory(Intent.CATEGORY_LEANBACK_LAUNCHER);
-		List<ResolveInfo> apps = mPackageManager.queryIntentActivities(AppsIntent, 0);
-
-		for (ResolveInfo app : apps) {
-			Drawable banner = app.activityInfo.loadBanner(mPackageManager);
-			if (banner == null) {
-				banner = app.activityInfo.applicationInfo.loadBanner(mPackageManager);
-			}
-		}
-		*/
-
+	public AppInfo(PackageManager packageManager, ResolveInfo resolveInfo) {
 		mPackageName = resolveInfo.activityInfo.packageName;
-		mIcon = resolveInfo.loadIcon(packageManager);
+
+		//mIcon = resolveInfo.loadIcon(packageManager);
+		mIcon = getApplicationIcon(packageManager, resolveInfo);
 		try {
 			mName = resolveInfo.loadLabel(packageManager).toString();
 		} catch (Exception e) {
 			mName = mPackageName;
 		}
 	}
-
-	public AppInfo(PackageManager packageManager, ApplicationInfo applicationInfo) {
-		mPackageName = applicationInfo.packageName;
-		mIcon = applicationInfo.loadIcon(packageManager);
-		try {
-			mName = applicationInfo.loadLabel(packageManager).toString();
-		} catch (Exception e) {
-			mName = mPackageName;
-		}
-	}
-
 
 	@NonNull
 	public String getName() {
@@ -79,5 +59,49 @@ public class AppInfo {
 
 	public String getPackageName() {
 		return mPackageName;
+	}
+
+	private Drawable getApplicationIcon(PackageManager packageManager, ResolveInfo resolveInfo) {
+		Drawable appIcon = null;
+
+		/*
+		try {
+			//https://developer.android.com/reference/android/content/pm/PackageManager#getApplicationBanner(java.lang.String)
+
+			resolveInfo.activityInfo.loadBanner(packageManager);
+			Drawable banner = resolveInfo.activityInfo.loadBanner(packageManager);
+			if (banner == null) {
+				banner = resolveInfo.activityInfo.applicationInfo.loadBanner(packageManager);
+			}
+
+			appIcon = banner;
+		} catch (Exception e) {
+			Log.e("check", "error getting Banner :", e);
+		}
+		*/
+
+		if (appIcon == null) {
+			try {
+				ApplicationInfo applicationInfo = resolveInfo.activityInfo.applicationInfo;
+				Resources resourcesForApplication = packageManager.getResourcesForApplication(applicationInfo);
+				appIcon = resourcesForApplication.getDrawableForDensity(applicationInfo.icon, DisplayMetrics.DENSITY_XXXHIGH);
+
+				/*
+				Configuration config = resourcesForApplication.getConfiguration();
+				Configuration originalConfig = new Configuration(config);
+				DisplayMetrics displayMetrics = resourcesForApplication.getDisplayMetrics();
+				DisplayMetrics originalDisplayMetrics = resourcesForApplication.getDisplayMetrics();
+				displayMetrics.densityDpi = DisplayMetrics.DENSITY_XXXHIGH;
+				resourcesForApplication.updateConfiguration(config, displayMetrics);
+				appIcon = resourcesForApplication.getDrawable(applicationInfo.icon);
+				resourcesForApplication.updateConfiguration(originalConfig, originalDisplayMetrics);
+				*/
+			} catch (Exception e) {
+				Log.e("check", "error getting Hi Res Icon :", e);
+				appIcon = resolveInfo.activityInfo.applicationInfo.loadIcon(packageManager);
+			}
+		}
+
+		return appIcon;
 	}
 }

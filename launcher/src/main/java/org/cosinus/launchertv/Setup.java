@@ -28,8 +28,8 @@ import static org.cosinus.launchertv.activities.Preferences.PREFERENCE_TRANSPARE
 
 
 public class Setup {
-	private static final int DEFAULT_GRID_X = 3;
-	private static final int DEFAULT_GRID_Y = 2;
+	private static final int DEFAULT_GRID_X = 5;
+	private static final int DEFAULT_GRID_Y = 3;
 	private static final int DEFAULT_MARGIN_X = 5;
 	private static final int DEFAULT_MARGIN_Y = 5;
 
