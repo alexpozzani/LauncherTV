@@ -40,18 +40,13 @@ task checkstyle(type: Checkstyle) {
 }
 
 android {
-    compileSdkVersion 25
-    buildToolsVersion '26.0.2'
+    compileSdkVersion 34
 
-    lintOptions {
-        abortOnError true
-        lintConfig file('lint.xml')
-    }
 
     defaultConfig {
-        applicationId "org.cosinus.launchertv"
+        applicationId "com.alexpozzani.tvlauncher"
         minSdkVersion 14
-        targetSdkVersion 30
+        targetSdkVersion 34
         versionCode 159
         versionName "1.5.9"
     }
@@ -84,6 +79,11 @@ android {
             applicationIdSuffix ".debug"
             testCoverageEnabled true
         }
+    }
+    namespace 'com.alexpozzani.tvlauncher'
+    lint {
+        abortOnError true
+        lintConfig file('lint.xml')
     }
 }
 

@@ -1,6 +1,6 @@
 /*
  * Simple TV Launcher
- * Copyright 2017 Alexandre Del Bigio
+ * Copyright 2024 Alexandre Del Bigio
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-package org.cosinus.launchertv.fragments;
+package com.alexpozzani.tvlauncher.fragments;
 
 import android.app.Activity;
 import android.content.BroadcastReceiver;
@@ -31,6 +31,7 @@ import android.os.BatteryManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Looper;
 import android.support.v4.app.Fragment;
 import android.text.TextUtils;
 import android.view.Gravity;
@@ -42,17 +43,18 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import org.cosinus.launchertv.AppInfo;
-import org.cosinus.launchertv.R;
-import org.cosinus.launchertv.Setup;
-import org.cosinus.launchertv.Utils;
-import org.cosinus.launchertv.activities.ApplicationList;
-import org.cosinus.launchertv.activities.Preferences;
-import org.cosinus.launchertv.views.ApplicationView;
+import com.alexpozzani.tvlauncher.R;
+import com.alexpozzani.tvlauncher.AppInfo;
+import com.alexpozzani.tvlauncher.Setup;
+import com.alexpozzani.tvlauncher.Utils;
+import com.alexpozzani.tvlauncher.activities.ApplicationList;
+import com.alexpozzani.tvlauncher.views.ApplicationView;
+import com.alexpozzani.tvlauncher.activities.Preferences;
 
 import java.text.DateFormat;
 import java.util.Date;
 import java.util.List;
+import java.util.concurrent.Executors;
 
 @SuppressWarnings("PointlessBooleanExpression")
 public class ApplicationFragment extends Fragment implements View.OnClickListener, View.OnLongClickListener {
@@ -62,6 +64,14 @@ public class ApplicationFragment extends Fragment implements View.OnClickListene
 	private static final int REQUEST_CODE_WALLPAPER = 0x1F;
 	private static final int REQUEST_CODE_APPLICATION_START = 0x20;
 	private static final int REQUEST_CODE_PREFERENCES = 0x21;
+
+	private static final String[] DEFAULT_APPS = {
+			"com.android.settings",
+			"com.android.vending",
+			"com.android.chrome",
+			"com.google.android.youtube",
+			"com.alexpozzani.paineldigital",
+	};
 
 	private TextView mClock;
 	private TextView mDate;
@@ -124,11 +134,11 @@ public class ApplicationFragment extends Fragment implements View.OnClickListene
 		mTimeFormat = android.text.format.DateFormat.getTimeFormat(getActivity());
 		mDateFormat = android.text.format.DateFormat.getLongDateFormat(getActivity());
 
-		if (mSetup.keepScreenOn())
-			mContainer.setKeepScreenOn(true);
+		//keep screen on
+		mContainer.setKeepScreenOn(mSetup.keepScreenOn());
 
-		if (mSetup.showDate() == false)
-			mDate.setVisibility(View.GONE);
+		//show date
+		mDate.setVisibility(mSetup.showDate() ? View.VISIBLE : View.GONE);
 
 		if (mSetup.showBattery()) {
 			batteryLayout.setVisibility(View.VISIBLE);
@@ -146,6 +156,13 @@ public class ApplicationFragment extends Fragment implements View.OnClickListene
 		mGridView.setOnClickListener(this);
 
 		createApplications();
+
+		//check if it's the first time the app is launched, if so, add some default apps
+		Setup setup = new Setup(getContext());
+		if (setup.isFirstLaunch()) {
+			setup.setFirstLaunchDone();
+			addDefaultApps();
+		}
 
 		return view;
 	}
@@ -262,7 +279,6 @@ public class ApplicationFragment extends Fragment implements View.OnClickListene
 			}
 		}
 	}
-
 
 	private void restartActivity() {
 		if (mBatteryChangedReceiverRegistered) {
@@ -469,5 +485,31 @@ public class ApplicationFragment extends Fragment implements View.OnClickListene
 		}
 	}
 
+	private void addDefaultApps() {
+		Executors.newSingleThreadExecutor().execute(() -> {
 
+			Handler mainHandler = new Handler(Looper.getMainLooper());
+
+			PackageManager pm = getActivity().getPackageManager();
+			int currentApp = 0;
+
+			for (int i = 0; i < DEFAULT_APPS.length; i++) {
+				try {
+					PackageInfo pi = pm.getPackageInfo(DEFAULT_APPS[i], 0);
+
+					if (pi != null) {
+						writePreferences(currentApp, pi.packageName);
+						currentApp++;
+					}
+				} catch (PackageManager.NameNotFoundException e) {
+					e.printStackTrace();
+				}
+			}
+
+			mainHandler.post(() -> {
+				updateApplications();
+			});
+
+		});
+	}
 }

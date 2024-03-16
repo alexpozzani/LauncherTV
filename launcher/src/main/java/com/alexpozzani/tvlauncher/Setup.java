@@ -1,6 +1,6 @@
 /*
  * Simple TV Launcher
- * Copyright 2017 Alexandre Del Bigio
+ * Copyright 2024 Alexandre Del Bigio
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,16 +15,16 @@
  * limitations under the License.
  */
 
-package org.cosinus.launchertv;
+package com.alexpozzani.tvlauncher;
 
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 
-import org.cosinus.launchertv.activities.Preferences;
+import com.alexpozzani.tvlauncher.activities.Preferences;
 
-import static org.cosinus.launchertv.activities.Preferences.PREFERENCE_DEFAULT_TRANSPARENCY;
-import static org.cosinus.launchertv.activities.Preferences.PREFERENCE_TRANSPARENCY;
+import static com.alexpozzani.tvlauncher.activities.Preferences.PREFERENCE_DEFAULT_TRANSPARENCY;
+import static com.alexpozzani.tvlauncher.activities.Preferences.PREFERENCE_TRANSPARENCY;
 
 
 public class Setup {
@@ -79,7 +79,7 @@ public class Setup {
 
 	public boolean keepScreenOn() {
 		try {
-			return (getPreferences().getBoolean(Preferences.PREFERENCE_SCREEN_ON, false));
+			return (getPreferences().getBoolean(Preferences.PREFERENCE_SCREEN_ON, true));
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -137,5 +137,19 @@ public class Setup {
 
 	public int getMarginY() {
 		return getInt(Preferences.PREFERENCE_MARGIN_Y, DEFAULT_MARGIN_Y);
+	}
+
+	public boolean isFirstLaunch() {
+		try {
+			return (getPreferences().getBoolean(Preferences.PREFERENCE_FIRST_LAUNCH, true));
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return (true);
+	}
+
+	public void setFirstLaunchDone() {
+		//add default apps
+		getPreferences().edit().putBoolean(Preferences.PREFERENCE_FIRST_LAUNCH, false).apply();
 	}
 }

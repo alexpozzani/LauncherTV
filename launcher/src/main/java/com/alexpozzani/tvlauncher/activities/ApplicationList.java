@@ -1,6 +1,6 @@
 /*
  * Simple TV Launcher
- * Copyright 2017 Alexandre Del Bigio
+ * Copyright 2024 Alexandre Del Bigio
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-package org.cosinus.launchertv.activities;
+package com.alexpozzani.tvlauncher.activities;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -25,10 +25,10 @@ import android.view.View;
 import android.widget.AbsListView;
 import android.widget.AdapterView;
 
-import org.cosinus.launchertv.AppInfo;
-import org.cosinus.launchertv.R;
-import org.cosinus.launchertv.Utils;
-import org.cosinus.launchertv.views.ApplicationAdapter;
+import com.alexpozzani.tvlauncher.R;
+import com.alexpozzani.tvlauncher.AppInfo;
+import com.alexpozzani.tvlauncher.views.ApplicationAdapter;
+import com.alexpozzani.tvlauncher.Utils;
 
 
 public class ApplicationList extends Activity implements AdapterView.OnItemClickListener, View.OnClickListener {

@@ -1,6 +1,6 @@
 /*
  * Simple TV Launcher
- * Copyright 2017 Alexandre Del Bigio
+ * Copyright 2024 Alexandre Del Bigio
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-package org.cosinus.launchertv.activities;
+package com.alexpozzani.tvlauncher.activities;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -28,8 +28,8 @@ import android.preference.Preference;
 import android.preference.PreferenceActivity;
 import android.widget.Toast;
 
-import org.cosinus.launchertv.R;
-import org.cosinus.launchertv.Setup;
+import com.alexpozzani.tvlauncher.R;
+import com.alexpozzani.tvlauncher.Setup;
 
 import java.util.Locale;
 
@@ -47,6 +47,7 @@ public class Preferences extends PreferenceActivity {
 	public static final String PREFERENCE_MARGIN_Y = "preference_margin_y";
 	public static final String PREFERENCE_LOCKED = "preference_locked";
 	private static final String PREFERENCE_ABOUT = "preference_about";
+	public static final String PREFERENCE_FIRST_LAUNCH = "preference_first_launch";
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {

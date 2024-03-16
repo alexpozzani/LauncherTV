@@ -1,6 +1,6 @@
 /*
  * Simple TV Launcher
- * Copyright 2017 Alexandre Del Bigio
+ * Copyright 2024 Alexandre Del Bigio
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-package org.cosinus.launchertv.views;
+package com.alexpozzani.tvlauncher.views;
 
 import android.content.Context;
 import android.graphics.Color;
@@ -33,8 +33,8 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import org.cosinus.launchertv.R;
-import org.cosinus.launchertv.Setup;
+import com.alexpozzani.tvlauncher.R;
+import com.alexpozzani.tvlauncher.Setup;
 
 import java.util.Locale;
 

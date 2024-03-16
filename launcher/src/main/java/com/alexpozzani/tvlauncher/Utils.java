@@ -1,6 +1,6 @@
 /*
  * Simple TV Launcher
- * Copyright 2017 Alexandre Del Bigio
+ * Copyright 2024 Alexandre Del Bigio
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-package org.cosinus.launchertv;
+package com.alexpozzani.tvlauncher;
 
 import android.content.Context;
 import android.content.Intent;
@@ -46,13 +46,11 @@ public class Utils {
 		Set<String> knownPackages = new HashSet<>();
 		List<AppInfo> entries = new ArrayList<>();
 
-		if (intentActivities != null) {
-			for (ResolveInfo resolveInfo : intentActivities) {
-				if (!context.getPackageName().equals(resolveInfo.activityInfo.packageName) && 
+		for (ResolveInfo resolveInfo : intentActivities) {
+			if (!context.getPackageName().equals(resolveInfo.activityInfo.packageName) &&
 					!knownPackages.contains(resolveInfo.activityInfo.packageName)) {
-					entries.add(new AppInfo(packageManager, resolveInfo));
-					knownPackages.add(resolveInfo.activityInfo.packageName);
-				}
+				entries.add(new AppInfo(packageManager, resolveInfo));
+				knownPackages.add(resolveInfo.activityInfo.packageName);
 			}
 		}
 

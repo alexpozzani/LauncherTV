@@ -1,6 +1,6 @@
 /*
  * Simple TV Launcher
- * Copyright 2017 Alexandre Del Bigio
+ * Copyright 2024 Alexandre Del Bigio
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-package org.cosinus.launchertv;
+package com.alexpozzani.tvlauncher;
 
 import android.os.Build;
 import android.os.Bundle;
@@ -23,7 +23,7 @@ import android.support.v4.app.FragmentActivity;
 import android.view.View;
 import android.view.WindowManager;
 
-import org.cosinus.launchertv.fragments.ApplicationFragment;
+import com.alexpozzani.tvlauncher.fragments.ApplicationFragment;
 
 public class Launcher extends FragmentActivity {
 
@@ -43,6 +43,11 @@ public class Launcher extends FragmentActivity {
 	protected void onResume() {
 		super.onResume();
 		setFullScreen();
+	}
+
+	@Override
+	public void onBackPressed() {
+		//ignore event
 	}
 
 	private void setFullScreen() {

@@ -1,6 +1,6 @@
 /*
  * Simple TV Launcher
- * Copyright 2017 Alexandre Del Bigio
+ * Copyright 2024 Alexandre Del Bigio
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,13 +15,11 @@
  * limitations under the License.
  */
 
-package org.cosinus.launchertv;
+package com.alexpozzani.tvlauncher;
 
-import android.content.Intent;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
-import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.graphics.drawable.Drawable;
 import android.support.annotation.NonNull;
@@ -85,17 +83,6 @@ public class AppInfo {
 				ApplicationInfo applicationInfo = resolveInfo.activityInfo.applicationInfo;
 				Resources resourcesForApplication = packageManager.getResourcesForApplication(applicationInfo);
 				appIcon = resourcesForApplication.getDrawableForDensity(applicationInfo.icon, DisplayMetrics.DENSITY_XXXHIGH);
-
-				/*
-				Configuration config = resourcesForApplication.getConfiguration();
-				Configuration originalConfig = new Configuration(config);
-				DisplayMetrics displayMetrics = resourcesForApplication.getDisplayMetrics();
-				DisplayMetrics originalDisplayMetrics = resourcesForApplication.getDisplayMetrics();
-				displayMetrics.densityDpi = DisplayMetrics.DENSITY_XXXHIGH;
-				resourcesForApplication.updateConfiguration(config, displayMetrics);
-				appIcon = resourcesForApplication.getDrawable(applicationInfo.icon);
-				resourcesForApplication.updateConfiguration(originalConfig, originalDisplayMetrics);
-				*/
 			} catch (Exception e) {
 				Log.e("check", "error getting Hi Res Icon :", e);
 				appIcon = resolveInfo.activityInfo.applicationInfo.loadIcon(packageManager);
