@@ -34,6 +34,7 @@ import android.os.Handler;
 import android.os.Looper;
 import android.support.v4.app.Fragment;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -207,11 +208,7 @@ public class ApplicationFragment extends Fragment implements View.OnClickListene
 				});
 				av.setPosition(position++);
 				av.showName(showNames);
-				if (Build.VERSION.SDK_INT < Build.VERSION_CODES.JELLY_BEAN_MR1) {
-					av.setId(0x00FFFFFF + position);
-				} else {
-					av.setId(View.generateViewId());
-				}
+				av.setId(View.generateViewId());
 				LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.MATCH_PARENT, 1);
 				lp.setMargins(marginX, marginY, marginX, marginY);
 				av.setLayoutParams(lp);
@@ -418,7 +415,7 @@ public class ApplicationFragment extends Fragment implements View.OnClickListene
 		}
 
 		try {
-			Toast.makeText(getActivity(), v.getName(), Toast.LENGTH_SHORT).show();
+			Log.i(TAG, "openApplication: " + v.getName() + " : " + v.getPackageName());
 			startActivity(getLaunchIntentForPackage(v.getPackageName()));
 		} catch (Exception e) {
 			Toast.makeText(getActivity(), v.getName() + " : " + e.getMessage(), Toast.LENGTH_LONG).show();
@@ -427,8 +424,8 @@ public class ApplicationFragment extends Fragment implements View.OnClickListene
 
 	private void openApplication(String packageName) {
 		try {
+			Log.i(TAG, "openApplication: " + packageName);
 			Intent startApp = getLaunchIntentForPackage(packageName);
-			Toast.makeText(getActivity(), packageName, Toast.LENGTH_SHORT).show();
 			startActivity(startApp);
 		} catch (Exception e) {
 			Toast.makeText(getActivity(), packageName + " : " + e.getMessage(), Toast.LENGTH_LONG).show();

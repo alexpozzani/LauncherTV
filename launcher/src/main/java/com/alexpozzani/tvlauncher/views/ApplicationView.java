@@ -114,12 +114,7 @@ public class ApplicationView extends LinearLayout {
 		stateListDrawable.addState(new int[]{android.R.attr.state_hovered}, drawableFocused);
 		stateListDrawable.addState(StateSet.WILD_CARD, drawableEnabled);
 
-		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-			setBackground(stateListDrawable);
-		} else {
-			//noinspection deprecation
-			setBackgroundDrawable(stateListDrawable);
-		}
+		setBackground(stateListDrawable);
 	}
 
 	private int getTransparency(float transparency, float add) {

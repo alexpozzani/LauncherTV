@@ -46,16 +46,16 @@
 
 	<application
 		android:allowBackup="true"
-		android:fullBackupContent="true"
 		android:icon="@mipmap/ic_launcher"
+		android:roundIcon="@mipmap/ic_launcher_round"
+		android:banner="@mipmap/ic_banner"
 		android:label="@string/app_name"
 		android:supportsRtl="false"
 		android:theme="@style/Theme.AppCompat.Light.NoActionBar.FullScreen"
 		tools:ignore="GoogleAppIndexingWarning">
 		<activity
 			android:name="com.alexpozzani.tvlauncher.Launcher"
-			android:exported="true"
-			android:label="@string/app_name">
+			android:exported="true">
 			<intent-filter>
 				<action android:name="android.intent.action.MAIN"/>
 
@@ -67,5 +67,12 @@
 		<activity android:name=".activities.ApplicationList"/>
 		<activity android:name=".activities.Preferences"/>
 	</application>
+
+	<queries>
+		<intent>
+			<action android:name="android.intent.action.MAIN" />
+			<category android:name="android.intent.category.LAUNCHER" />
+		</intent>
+	</queries>
 
 </manifest>
