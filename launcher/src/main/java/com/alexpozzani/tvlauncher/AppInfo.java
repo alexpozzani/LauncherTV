@@ -82,7 +82,7 @@ public class AppInfo {
 			try {
 				ApplicationInfo applicationInfo = resolveInfo.activityInfo.applicationInfo;
 				Resources resourcesForApplication = packageManager.getResourcesForApplication(applicationInfo);
-				appIcon = resourcesForApplication.getDrawableForDensity(applicationInfo.icon, DisplayMetrics.DENSITY_XXXHIGH);
+				appIcon = resourcesForApplication.getDrawableForDensity(applicationInfo.icon, DisplayMetrics.DENSITY_XXXHIGH, null);
 			} catch (Exception e) {
 				Log.e("check", "error getting Hi Res Icon :", e);
 				appIcon = resolveInfo.activityInfo.applicationInfo.loadIcon(packageManager);

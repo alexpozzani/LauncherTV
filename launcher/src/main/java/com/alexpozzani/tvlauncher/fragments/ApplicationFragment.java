@@ -68,6 +68,7 @@ public class ApplicationFragment extends Fragment implements View.OnClickListene
 
 	private static final String[] DEFAULT_APPS = {
 			"com.android.settings",
+			"com.android.tv.settings",
 			"com.android.vending",
 			"com.android.chrome",
 			"com.google.android.youtube",
@@ -88,7 +89,7 @@ public class ApplicationFragment extends Fragment implements View.OnClickListene
 					String.format(getResources().getString(R.string.battery_level_text), level)
 			);
 			final int batteryIconId = intent.getIntExtra(BatteryManager.EXTRA_ICON_SMALL, 0);
-			mBatteryIcon.setImageDrawable(getResources().getDrawable(batteryIconId));
+			mBatteryIcon.setImageDrawable(getResources().getDrawable(batteryIconId, null));
 		}
 	};
 	private boolean mBatteryChangedReceiverRegistered = false;
@@ -392,33 +393,27 @@ public class ApplicationFragment extends Fragment implements View.OnClickListene
 	public void onClick(View v) {
 		if (v instanceof ApplicationView) {
 			openApplication((ApplicationView) v);
-			return;
 		}
-
-		switch (v.getId()) {
-			case R.id.application_grid: {
-				openApplicationList(ApplicationList.VIEW_GRID, 0, false, REQUEST_CODE_APPLICATION_START);
-			}
-			break;
-
-			case R.id.settings:
-				startActivityForResult(new Intent(getContext(), Preferences.class), REQUEST_CODE_PREFERENCES);
+		else {
+			switch (v.getId()) {
+				case R.id.application_grid: {
+					openApplicationList(ApplicationList.VIEW_GRID, 0, false, REQUEST_CODE_APPLICATION_START);
+				}
 				break;
-		}
 
+				case R.id.settings:
+					startActivityForResult(new Intent(getContext(), Preferences.class), REQUEST_CODE_PREFERENCES);
+					break;
+			}
+
+		}
 	}
 
 	private void openApplication(ApplicationView v) {
 		if (v.hasPackage() == false) {
 			openApplicationList(ApplicationList.VIEW_LIST, v.getPosition(), false, REQUEST_CODE_APPLICATION_LIST);
-			return;
-		}
-
-		try {
-			Log.i(TAG, "openApplication: " + v.getName() + " : " + v.getPackageName());
-			startActivity(getLaunchIntentForPackage(v.getPackageName()));
-		} catch (Exception e) {
-			Toast.makeText(getActivity(), v.getName() + " : " + e.getMessage(), Toast.LENGTH_LONG).show();
+		} else {
+			openApplication(v.getPackageName());
 		}
 	}
 
@@ -494,7 +489,7 @@ public class ApplicationFragment extends Fragment implements View.OnClickListene
 				try {
 					PackageInfo pi = pm.getPackageInfo(DEFAULT_APPS[i], 0);
 
-					if (pi != null) {
+					if (pi != null && getLaunchIntentForPackage(pi.packageName) != null) {
 						writePreferences(currentApp, pi.packageName);
 						currentApp++;
 					}
